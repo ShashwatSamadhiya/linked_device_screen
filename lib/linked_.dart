@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-
-List<Widget> crd = [];
+import 'package:linked_device/device_history.dart';
 
 class linked_ extends StatefulWidget {
   const linked_({super.key});
@@ -11,7 +10,69 @@ class linked_ extends StatefulWidget {
 }
 
 class _linked_State extends State<linked_> {
-  int countlinkedevices = 1;
+  int countlinkedevices = 0;
+
+  Widget history(BuildContext context) {
+    return Container(
+        width: 346,
+        height: 24,
+        margin:
+            EdgeInsets.only(top: countlinkedevices > 0 ? 638 : 472, left: 21.5),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Device History",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 17),
+            ),
+            Padding(padding: EdgeInsets.symmetric(horizontal: 83)),
+            Container(
+              width: 35,
+              height: 24,
+              decoration: BoxDecoration(
+                color: Color(0xfff3a3a3c),
+                borderRadius: BorderRadius.circular(100),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 5),
+              child: Text(
+                "1",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12),
+              ),
+            ),
+            Padding(padding: EdgeInsets.symmetric(horizontal: 7)),
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const device_history()),
+                  );
+                },
+                child: Container(
+                    width: 15,
+                    height: 24,
+                    child: FittedBox(
+                      fit: BoxFit.cover,
+                      child: Icon(
+                          color: Color(0xfff8E8E93),
+                          IconData(0xee8c,
+                              fontFamily: 'MaterialIcons',
+                              matchTextDirection: true)),
+                    )),
+              ),
+            )
+          ],
+        ));
+  }
 
   Widget header(BuildContext context) {
     return Container(
@@ -93,7 +154,53 @@ class _linked_State extends State<linked_> {
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
           child: GestureDetector(
-            onTap: () => {},
+            onTap: () => showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                //  backgroundColor: Color.fromARGB(255, 241, 221, 221),
+                title: Text('Link New Device',
+                    style: TextStyle(
+                        fontSize: 17.0,
+                        fontWeight: FontWeight.w500,
+                        foreground: Paint()
+                          ..shader = LinearGradient(
+                            colors: <Color>[
+                              Color.fromARGB(255, 183, 67, 237).withOpacity(1),
+                              Color(0xff25C3D8).withOpacity(1),
+
+                              //add more color here.
+                            ],
+                          ).createShader(Rect.fromLTWH(50, 50, 250.0, 260.0)))),
+                content: const Text('To link more than 1 device get premium'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Continue'),
+                    child: Text('Continue',
+                        style: TextStyle(
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.w500,
+                            foreground: Paint()
+                              ..shader = LinearGradient(
+                                colors: <Color>[
+                                  Color.fromARGB(255, 183, 67, 237)
+                                      .withOpacity(1),
+                                  Color(0xff25C3D8).withOpacity(1),
+
+                                  //add more color here.
+                                ],
+                              ).createShader(
+                                  Rect.fromLTWH(120, 120, 350.0, 360.0)))),
+                  ),
+                ],
+              ),
+            ),
             child: Text(
               "Scan QR code on screen",
               textAlign: TextAlign.center,
@@ -221,6 +328,7 @@ class _linked_State extends State<linked_> {
                     ),
                     linkedno(context),
                     countlinkedevices > 0 ? card(context) : Container(),
+                    history(context)
                   ]),
                 ],
               ))),
